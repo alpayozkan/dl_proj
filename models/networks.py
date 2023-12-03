@@ -101,9 +101,10 @@ class BottleneckMLP(nn.Module):
         with open(config_path, 'r') as f:
             self.config = json.load(f)
 
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         params = {
             k: v
-            for k, v in torch.load(weight_path).items()
+            for k, v in torch.load(weight_path, map_location=device).items()
         }
 
         # Load pre-trained parameters

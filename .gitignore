@@ -6,4 +6,4 @@ checkpoints/
 **/*.pth
 **/*.pkl
 adversarial-attacks-pytorch
-
+finetuned_models

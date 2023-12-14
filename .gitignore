@@ -7,3 +7,4 @@ checkpoints/
 **/*.pkl
 adversarial-attacks-pytorch
 finetuned_models
+pytorch-image-models

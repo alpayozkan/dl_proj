@@ -1,0 +1,145 @@
+%%%%%%%% ICML 2023 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+
+% hyperref makes hyperlinks in the resulting PDF.
+% If your build breaks (sometimes temporarily if a hyperlink spans a page)
+% please comment out the following usepackage line and replace
+% \usepackage{icml2023} with \usepackage[nohyperref]{icml2023} above.
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+% Use the following line for the initial blind version submitted for review:
+% \usepackage{icml2023}
+
+% If accepted, instead use the following line for the camera-ready submission:
+\usepackage[accepted]{icml2023}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+% if you use cleveref..
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Todonotes is useful during development; simply uncomment the next line
+%    and comment out the line below the next line to turn off comments
+%\usepackage[disable,textsize=tiny]{todonotes}
+\usepackage[textsize=tiny]{todonotes}
+
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\icmltitlerunning{ETH Zürich - Deep Learning Class 2023-2024}
+
+\begin{document}
+
+\twocolumn[
+\icmltitle{Comparing MLPs to Vision Models for Image Classification Tasks}
+
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2023
+% package.
+
+% List of affiliations: The first argument should be a (short)
+% identifier you will use later to specify author affiliations
+% Academic affiliations should list Department, University, City, Region, Country
+% Industry affiliations should list Company, City, Region, Country
+
+% You can specify symbols, otherwise they are numbered in order.
+% Ideally, you should not use this facility. Affiliations will be numbered
+% in order of appearance and this is the preferred way.
+\icmlsetsymbol{equal}{*}
+
+\begin{icmlauthorlist}
+\icmlauthor{Piero Neri}{}
+\icmlauthor{Alpay Özkan}{}
+\icmlauthor{Robin Oester}{}
+\icmlauthor{Gabriel Hug}{}
+%\icmlauthor{}{sch}
+%\icmlauthor{}{sch}
+\end{icmlauthorlist}
+
+% You may provide any keywords that you
+% find helpful for describing your paper; these are used to populate
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{Machine Learning, Deep Learning}
+
+\vskip 0.2in
+]
+
+
+\section{Introduction}
+Due to their mathematical simplicity, multi-layer perceptrons (MLPs) represent an ideal basis for exploring machine learning concepts and techniques that may have general applicability to newer and more complex architectures. Emerging experimental evidence \cite{bachmann2023scaling} suggests that MLPs can behave similarly to their modern counterparts, such as CNNs. While the decision process for CNNs can be visualized by looking at the learned filters, the role played by weights in MLPs is less amenable to a graphical representation. 
+Furthermore, it remains an open question whether MLPs exhibit greater adversarial robustness to image perturbations that result in misclassifications in CNN-based models. 
+In this project, we aim to compare MLPs to vision models, such as CNNs, to gain more insights into the decision-making process of an MLP in four relevant settings: adversarial attacks, saliency maps, class maximization, and the inspection of the principal components of layers of MLPs and CNNs.
+
+\section{Background \& Related Works}
+\citet{bachmann2023scaling} have recently studied the performance of MLPs in computer vision tasks: an application area for which MLPs are not commonly used since they exhibit less inductive bias. Opposed to specialized architectures like CNNs, MLPs lack translation-equivariance. The authors found that the MLPs behave similarly to their modern counterparts when subjected to increasing scale. They also observed that MLPs may be competitive with certain CNN architectures when pretrained on large data sets. These findings motivated us to dive deeper into the decision process of MLPs applied to image classification tasks.
+
+\section{Methods}
+\textbf{Adversarial Whitebox Attacks.}
+Adversarial attacks, as introduced by \citet{szegedy2014intriguing}, are a tool for testing the robustness of neural networks. Starting from a target image, an image with specific perturbation noise is generated. However, as opposed to the original one, the target model misclassifies this new image. The systematic review by \cite{LONG2022102847} describes a taxonomy for adversarial attacks, among others, gradient-based and transfer-based attacks. We focus on whitebox attacks in those two categories, where we have full access to the model structure and parameters. We will evaluate how adversarial examples differ in MLPs and CNNs and whether a transfer attack is possible.
+
+\textbf{Saliency Maps.}
+This method is used to capture and visualize the attention of a neural network on a given image. 
+Saliency maps, as described, e.g., in \citet{Simonyan14a}, are obtained by taking the derivative of the class score function, i.e., the output signal of the network with respect to the input image. Techniques for saliency maps can be split into two broad groups: perturbation-based approaches, such as LIME \cite{ribeiro2016why}, and
+gradient-based ones like Grad-CAM \cite{Selvaraju_2019}.
+In our work, we will create saliency maps for MLPs and compare them to CNNs, investigating their attention differences.
+
+\textbf{Class Maximization.}
+Such methods can be used in image classification to generate an artificial image that is representative for a class of interest. One possible method is to use gradient-ascent as proposed in \citet{erhan}. By starting with random input noise, a given class activation is maximized. We will make use of this to compare class-maximized images from MLPs and CNNs.
+
+\textbf{Dimensionality Reduction.}
+Related work from \citet{7539329} has shown the ability to visualize the hidden activity of neural networks using dimensionality reduction. We differentiate between linear approaches, such as PCA, and non-linear ones like t-SNE. An efficient implementation of the latter algorithm can be found in \citet{JMLR:v15:vandermaaten14a}. Both methods will be used to qualitatively compare the intermediate representations of CNNs and MLPs.
+
+\section{Models \& Datasets}
+\citet{bachmann2023scaling} have published their pretrained MLP models. Furthermore, they compared their MLPs to ResNet18 \cite{he2015deep}, for which the learned weights can be found in the PyTorch library. 
+To reduce the computational resources needed, this work will use the above mentioned models trained on the well-known CIFAR-10 and CIFAR-100 \cite{Krizhevsky2009LearningML} datasets as well as the Tiny ImageNet \cite{Le2015TinyIV}. As a stretch goal, we also aim to compare MLPs to Vision Transformers (ViTs) \cite{dosovitskiy2021image}.
+
+\bibliography{bibliography}
+\bibliographystyle{icml2023}
+
+\end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was created
+% by Iain Murray in 2018, and modified by Alexandre Bouchard in
+% 2019 and 2021 and by Csaba Szepesvari, Gang Niu and Sivan Sabato in 2022.
+% Modified again in 2023 by Sivan Sabato and Jonathan Scarlett.
+% Previous contributors include Dan Roy, Lise Getoor and Tobias
+% Scheffer, which was slightly modified from the 2010 version by
+% Thorsten Joachims & Johannes Fuernkranz, slightly modified from the
+% 2009 version by Kiri Wagstaff and Sam Roweis's 2008 version, which is
+% slightly modified from Prasad Tadepalli's 2007 version which is a
+% lightly changed version of the previous year's version by Andrew
+% Moore, which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.

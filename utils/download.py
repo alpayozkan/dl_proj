@@ -11,6 +11,9 @@ default_checkpoints = {
     'B_12-Wi_1024_res_64_in21k_cifar10': 'B-12_Wi-1024_res_64_cifar10_epochs_20',
     'B_12-Wi_1024_res_64_in21k_cifar100': 'B-12_Wi-1024_res_64_cifar100_epochs_40',
     'B_12-Wi_1024_res_64_in21k_imagenet': 'B-12_Wi-1024_res_64_imagenet_epochs_50',
+    # Gabriel => TinyImagenet
+    'B_12-Wi_1024_res_64_in21k_tinyimagenet.t7': 'B_12-Wi_1024_res_64_in21k_tinyimagenet.t7',
+    
     'B_12-Wi_512_res_64_in21k_cifar10': 'B-12_Wi-512_res_64_cifar10_epochs_20',
     'B_12-Wi_512_res_64_in21k_cifar100': 'B-12_Wi-512_res_64_cifar100_epochs_20',
     'B_12-Wi_512_res_64_in21k_imagenet': 'B-12_Wi-512_res_64_imagenet_epochs_20',

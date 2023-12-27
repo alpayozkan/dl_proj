@@ -49,7 +49,7 @@ class StandardMLP(nn.Module):
 
 
 class BottleneckMLP(nn.Module):
-    def __init__(self, dim_in, dim_out, block_dims, norm='layer', checkpoint=None, name=None):
+    def __init__(self, dim_in, dim_out, block_dims, norm='layer', checkpoint=None, name=None, bypass=False):
         super(BottleneckMLP, self).__init__()
         self.dim_in = dim_in
         self.dim_out = dim_out
@@ -72,7 +72,10 @@ class BottleneckMLP(nn.Module):
         self.layernorms = nn.ModuleList(layernorms)
 
         if self.checkpoint is not None:
-            self.load(self.checkpoint)
+            if not bypass:
+                self.load(self.checkpoint)
+            else:
+                self.load_bypass(self.checkpoint)
 
     def forward(self, x):
         x = self.linear_in(x)
@@ -109,6 +112,26 @@ class BottleneckMLP(nn.Module):
         # Load pre-trained parameters
         print('Load_state output', self.load_state_dict(params, strict=False))
 
+    def load_bypass(self, name, checkpoint_path='./checkpoints/'):
+        #if name == True:
+            # This simply assumes Imagenet21 pre-trained weights at the latest epoch available, no fine-tuning
+        #    name = default_checkpoints[self.name]
+        #elif name in ['cifar10', 'cifar100', 'imagenet']:
+            # This loads the optimal fine-tuned weights for that dataset
+        #    name = default_checkpoints[self.name + '_' + name]
+        #else:
+            # This assumes a full path, e.g. also specifying which epoch etc
+        #    name = self.name + '_' + name
+        weight_path = checkpoint_path + name
+
+        params = {
+            k: v
+            for k, v in torch.load(weight_path, map_location ='cpu').items()
+        }
+
+        # Load pre-trained parameters
+        print('Load_state output', self.load_state_dict(params, strict=False))
+
 
 class BottleneckBlock(nn.Module):
     def __init__(self, thin, wide, act=nn.GELU()):
@@ -124,28 +147,28 @@ class BottleneckBlock(nn.Module):
         return out
 
 
-def B_12_Wi_1024(dim_in, dim_out, checkpoint=None):
+def B_12_Wi_1024(dim_in, dim_out, checkpoint=None, bypass=False):
     block_dims = [[4 * 1024, 1024] for _ in range(12)]
     return BottleneckMLP(dim_in=dim_in, dim_out=dim_out, norm='layer', block_dims=block_dims, checkpoint=checkpoint,
-                         name='B_' + str(len(block_dims)) + '-Wi_' + str(block_dims[0][1]) + '_res_' + str(int(np.sqrt(dim_in/3))))
+                         name='B_' + str(len(block_dims)) + '-Wi_' + str(block_dims[0][1]) + '_res_' + str(int(np.sqrt(dim_in/3))), bypass=bypass)
 
 
-def B_12_Wi_512(dim_in, dim_out, checkpoint=None):
+def B_12_Wi_512(dim_in, dim_out, checkpoint=None, bypass=False):
     block_dims = [[4 * 512, 512] for _ in range(12)]
     return BottleneckMLP(dim_in=dim_in, dim_out=dim_out, norm='layer', block_dims=block_dims, checkpoint=checkpoint,
-                         name='B_' + str(len(block_dims)) + '-Wi_' + str(block_dims[0][1]) + '_res_' + str(int(np.sqrt(dim_in/3))))
+                         name='B_' + str(len(block_dims)) + '-Wi_' + str(block_dims[0][1]) + '_res_' + str(int(np.sqrt(dim_in/3))), bypass=bypass)
 
 
-def B_6_Wi_1024(dim_in, dim_out, checkpoint=None):
+def B_6_Wi_1024(dim_in, dim_out, checkpoint=None, bypass=False):
     block_dims = [[4 * 1024, 1024] for _ in range(6)]
     return BottleneckMLP(dim_in=dim_in, dim_out=dim_out, norm='layer', block_dims=block_dims, checkpoint=checkpoint,
-                         name='B_' + str(len(block_dims)) + '-Wi_' + str(block_dims[0][1]) + '_res_' + str(int(np.sqrt(dim_in/3))))
+                         name='B_' + str(len(block_dims)) + '-Wi_' + str(block_dims[0][1]) + '_res_' + str(int(np.sqrt(dim_in/3))), bypass=bypass)
 
 
-def B_6_Wi_512(dim_in, dim_out, checkpoint=None):
+def B_6_Wi_512(dim_in, dim_out, checkpoint=None, bypass=False):
     block_dims = [[4 * 512, 512] for _ in range(6)]
     return BottleneckMLP(dim_in=dim_in, dim_out=dim_out, norm='layer', block_dims=block_dims, checkpoint=checkpoint,
-                         name='B_' + str(len(block_dims)) + '-Wi_' + str(block_dims[0][1]) + '_res_' + str(int(np.sqrt(dim_in/3))))
+                         name='B_' + str(len(block_dims)) + '-Wi_' + str(block_dims[0][1]) + '_res_' + str(int(np.sqrt(dim_in/3))), bypass=bypass)
 
 
 model_list = {
@@ -158,3 +181,6 @@ model_list = {
 
 def get_model(architecture, checkpoint, resolution, num_classes):
     return model_list[architecture](dim_in=resolution**2 * 3, dim_out=num_classes, checkpoint=checkpoint)
+
+def get_model_bypass(architecture, checkpoint, resolution, num_classes):
+    return model_list[architecture](dim_in=resolution**2 * 3, dim_out=num_classes, checkpoint=checkpoint, bypass=True)

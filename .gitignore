@@ -5,4 +5,4 @@ checkpoints/
 **/*.pt
 **/*.pth
 adversarial-attacks-pytorch/
-.gitignore
+finetuned_models/

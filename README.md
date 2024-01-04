@@ -1,6 +1,6 @@
 # Deep Learning Project
 
-Welcome to our Deep Learning project repository.
+Welcome to our Deep Learning Project repository.
 
 In this project, we explored four different topics to compare Multi-Layer Perceptrons (MLPs) with vision models such as Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs):
 
@@ -64,7 +64,7 @@ To run the class maximization code, follow these steps:
             - `ResNet18_TinyImageNet.t7`
             - `vit_tiny_patch16_224_unfrozen_tinyimagenet.t7`
 
-3. To run the class maximization code, navigate to the `revelio` folder and execute the cells in the notebook named `cm-tinyimgnet.ipynb`.
+3. To run the class maximization code, open the `revelio` folder and execute the cells in the notebook named `cm-tinyimgnet.ipynb`.
 
 
 ## Saliency

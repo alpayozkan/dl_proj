@@ -49,7 +49,7 @@ To run the adversarial attacks code for our experiments, follow these steps:
 
 To run the class maximization code, follow these steps:
 
-1. Switch to the `adv_attacks` branch:
+1. Switch to the `classmaxim` branch:
 
     ```bash
     git checkout classmaxim

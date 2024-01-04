@@ -1,2 +1,16 @@
 data/
 checkpoints/
+**/__pycache__/
+**/__pycache__/
+**/*.pt
+**/*.pth
+**/*.pkl
+adversarial-attacks-pytorch
+finetuned_models
+pytorch-image-models
+data/
+checkpoints/
+**/*.pt
+**/*.pth
+adversarial-attacks-pytorch/
+finetuned_models/

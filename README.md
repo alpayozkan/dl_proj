@@ -70,8 +70,35 @@ To run the class maximization code, follow these steps:
 ## Saliency
 ### Occlusion Sensitivity
 TODO
-### LIME
-TODO
+### LIME and Dimensionality Reduction
+1. Switch to the `saliency` branch:
 
-## Dimensionality Reduction
-TODO
+    ```bash
+    git checkout saliency
+    ```
+
+2. Inside the `dl_proj` folder:
+
+    - Inside the following folder, add the corresponding weights from the Drive:
+
+        - store to `models`:
+            - `mlp_b12_wi1024_imagenet_bs128_tinyimagenet.t7`
+            - `ResNet18_TinyImageNet.t7`
+            - `vit_tiny_patch16_224_unfrozen_tinyimagenet.t7`
+        
+    - rename the downloaded files:
+      - `mlp_b12_wi1024_imagenet_bs128_tinyimagenet.t7` -> `mlp_tinyimagenet.pt`
+      - `ResNet18_TinyImageNet.t7` -> `resnet18_tinyimagenet.pt`
+      - `vit_tiny_patch16_224_unfrozen_tinyimagenet.t7` -> `ViT_tinyimagenet.pt`
+
+3. There are 4 important notebooks:
+    - lime_tester.ipynb
+    - lime_experiments.ipynb
+    - dimensionality_tester.ipynb
+    - dimensionality_experiments.ipynb
+    
+    The first two are related to LIME. The 'tester' notebook consists of some basic applications of LIME.
+    The second notebook can be used to reproduce our experimental results. More details can be found in the notebooks.
+    
+    Similar for dimensionality reduction, we are introduced to the topic through the 'tester' notebook, whereas the 
+    experiments can be performed by executing the second notebook.

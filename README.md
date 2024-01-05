@@ -11,7 +11,7 @@ In this project, we explored four different topics to compare Multi-Layer Percep
 
 For instructions on running the code related to each topic, please refer to the information provided in the corresponding section below.
 
-The required model weights can be found on this [Drive](https://drive.google.com/drive/folders/11Ma2KYE_OuFOHYrvX1R5ZWZtWJ4gC6c4).
+The required model weights can be found on this [Drive](https://drive.google.com/drive/folders/11Ma2KYE_OuFOHYrvX1R5ZWZtWJ4gC6c4) under the subfolder finetuned_models.
 
 ## Adversarial Attacks 
 
@@ -69,7 +69,10 @@ To run the class maximization code, follow these steps:
 
 ## Saliency
 ### Occlusion Sensitivity
-TODO
+We ran occlusion sensitivity on Google Colab. The jupyter notebook can be found under the shared Google [Drive](https://drive.google.com/drive/folders/11Ma2KYE_OuFOHYrvX1R5ZWZtWJ4gC6c4) under the name "sensitivity_occlusion_final.ipynb".
+To run this file, add a shortcut to the shared Google Drive folder to your Google Drive. Then open the juypter notebook with Google Colab and adjust the PATH in the second cell.
+To see the result files, head to the shared Google Drive folder and look for the subfolder: occlusion_sensivity_tinyimagenet_true_class. Each image is titled with the TinyImageNet Validation ID for that reference image.
+
 ### LIME and Dimensionality Reduction
 1. Switch to the `saliency` branch:
 
